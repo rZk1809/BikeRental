@@ -1,22 +1,16 @@
 import Stripe from 'stripe';
-
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
-// Test Stripe connection
 console.log('Stripe initialized with key:', process.env.STRIPE_SECRET_KEY ? 'Key present' : 'Key missing');
-
-// Create payment intent for booking
 export const createPaymentIntent = async (amount, currency = 'usd', metadata = {}) => {
     try {
         const paymentIntent = await stripe.paymentIntents.create({
-            amount: Math.round(amount * 100), // Convert to cents
+amount: Math.round(amount * 100),
             currency,
             metadata,
             automatic_payment_methods: {
                 enabled: true,
             },
         });
-
         return {
             success: true,
             clientSecret: paymentIntent.client_secret,
@@ -30,19 +24,15 @@ export const createPaymentIntent = async (amount, currency = 'usd', metadata = {
         };
     }
 };
-
-// Create checkout session for booking
 export const createCheckoutSession = async (bookingData) => {
     try {
         const { bikeDetails, userDetails, bookingDetails, amount } = bookingData;
-
         console.log('Creating Stripe checkout session with data:', {
             bikeDetails,
             userDetails: { ...userDetails, email: userDetails.email },
             bookingDetails,
             amount
         });
-
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
@@ -54,7 +44,7 @@ export const createCheckoutSession = async (bookingData) => {
                             description: `Rental from ${bookingDetails.pickupDate} to ${bookingDetails.returnDate}`,
                             images: bikeDetails.image ? [bikeDetails.image] : [],
                         },
-                        unit_amount: Math.round(amount * 100), // Convert to cents
+unit_amount: Math.round(amount * 100),
                     },
                     quantity: 1,
                 },
@@ -71,7 +61,6 @@ export const createCheckoutSession = async (bookingData) => {
                 returnDate: String(bookingDetails.returnDate),
             },
         });
-
         return {
             success: true,
             sessionId: session.id,
@@ -85,8 +74,6 @@ export const createCheckoutSession = async (bookingData) => {
         };
     }
 };
-
-// Verify payment status
 export const verifyPayment = async (paymentIntentId) => {
     try {
         const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
@@ -94,7 +81,7 @@ export const verifyPayment = async (paymentIntentId) => {
         return {
             success: true,
             status: paymentIntent.status,
-            amount: paymentIntent.amount / 100, // Convert back from cents
+amount: paymentIntent.amount / 100,
             currency: paymentIntent.currency
         };
     } catch (error) {
@@ -105,8 +92,6 @@ export const verifyPayment = async (paymentIntentId) => {
         };
     }
 };
-
-// Retrieve checkout session
 export const retrieveCheckoutSession = async (sessionId) => {
     try {
         const session = await stripe.checkout.sessions.retrieve(sessionId);
@@ -125,8 +110,6 @@ export const retrieveCheckoutSession = async (sessionId) => {
         };
     }
 };
-
-// Create refund
 export const createRefund = async (paymentIntentId, amount = null) => {
     try {
         const refundData = {
@@ -134,16 +117,14 @@ export const createRefund = async (paymentIntentId, amount = null) => {
         };
         
         if (amount) {
-            refundData.amount = Math.round(amount * 100); // Convert to cents
+refundData.amount = Math.round(amount * 100);
         }
-
         const refund = await stripe.refunds.create(refundData);
-
         return {
             success: true,
             refundId: refund.id,
             status: refund.status,
-            amount: refund.amount / 100 // Convert back from cents
+amount: refund.amount / 100
         };
     } catch (error) {
         console.error('Error creating refund:', error);
@@ -153,5 +134,4 @@ export const createRefund = async (paymentIntentId, amount = null) => {
         };
     }
 };
-
 export default stripe;

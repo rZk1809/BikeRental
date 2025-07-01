@@ -4,7 +4,6 @@ import { useAppContext } from '../context/AppContext';
 import { motion } from 'motion/react';
 import { toast } from 'react-hot-toast';
 import './VerifyEmail.css';
-
 const VerifyEmail = () => {
     const [searchParams] = useSearchParams();
     const { axios, login } = useAppContext();
@@ -13,11 +12,9 @@ const VerifyEmail = () => {
     const [message, setMessage] = useState('');
     const [resendEmail, setResendEmail] = useState('');
     const [isResending, setIsResending] = useState(false);
-
     useEffect(() => {
         const token = searchParams.get('token');
         console.log('Token from URL:', token); // Debug log
-
         if (token) {
             verifyEmail(token);
         } else {
@@ -25,18 +22,14 @@ const VerifyEmail = () => {
             setMessage('Invalid verification link');
         }
     }, [searchParams]);
-
     const verifyEmail = async (token) => {
         try {
             console.log('Sending verification request with token:', token); // Debug log
             const { data } = await axios.post('/api/auth/verify-email', { token });
             console.log('Verification response:', data); // Debug log
-
             if (data.success) {
                 setVerificationStatus('success');
                 setMessage(data.message);
-
-                // Auto login the user
                 if (data.token) {
                     login(data.token);
                     setTimeout(() => {
@@ -53,14 +46,12 @@ const VerifyEmail = () => {
             setMessage('An error occurred during verification');
         }
     };
-
     const handleResendVerification = async (e) => {
         e.preventDefault();
         if (!resendEmail) {
             toast.error('Please enter your email address');
             return;
         }
-
         setIsResending(true);
         try {
             const { data } = await axios.post('/api/auth/resend-verification', { 
@@ -79,7 +70,6 @@ const VerifyEmail = () => {
             setIsResending(false);
         }
     };
-
     return (
         <div className="verify-email-page">
             <div className="verify-email-container">
@@ -96,7 +86,6 @@ const VerifyEmail = () => {
                             <p>Please wait while we verify your email address...</p>
                         </div>
                     )}
-
                     {verificationStatus === 'success' && (
                         <div className="verification-status success">
                             <div className="success-icon">✅</div>
@@ -113,7 +102,6 @@ const VerifyEmail = () => {
                             </div>
                         </div>
                     )}
-
                     {verificationStatus === 'error' && (
                         <div className="verification-status error">
                             <div className="error-icon">❌</div>
@@ -139,7 +127,6 @@ const VerifyEmail = () => {
                                     </button>
                                 </form>
                             </div>
-
                             <div className="back-to-home">
                                 <button 
                                     onClick={() => navigate('/')}
@@ -155,5 +142,4 @@ const VerifyEmail = () => {
         </div>
     );
 };
-
 export default VerifyEmail;

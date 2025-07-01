@@ -4,7 +4,6 @@ import { useAppContext } from '../context/AppContext';
 import { motion } from 'motion/react';
 import { toast } from 'react-hot-toast';
 import './ResetPassword.css';
-
 const ResetPassword = () => {
     const [searchParams] = useSearchParams();
     const { axios, setShowLogin } = useAppContext();
@@ -15,7 +14,6 @@ const ResetPassword = () => {
     });
     const [isLoading, setIsLoading] = useState(false);
     const [token, setToken] = useState('');
-
     useEffect(() => {
         const resetToken = searchParams.get('token');
         if (resetToken) {
@@ -25,7 +23,6 @@ const ResetPassword = () => {
             navigate('/');
         }
     }, [searchParams, navigate]);
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -33,7 +30,6 @@ const ResetPassword = () => {
             [name]: value
         }));
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -41,14 +37,11 @@ const ResetPassword = () => {
             toast.error('Passwords do not match');
             return;
         }
-
         if (formData.newPassword.length < 8) {
             toast.error('Password must be at least 8 characters long');
             return;
         }
-
         setIsLoading(true);
-
         try {
             const { data } = await axios.post('/api/auth/reset-password', {
                 token,
@@ -70,7 +63,6 @@ const ResetPassword = () => {
             setIsLoading(false);
         }
     };
-
     return (
         <div className="reset-password-page">
             <div className="reset-password-container">
@@ -84,7 +76,6 @@ const ResetPassword = () => {
                         <h2>Reset Your Password</h2>
                         <p>Enter your new password below to complete the reset process.</p>
                     </div>
-
                     <form onSubmit={handleSubmit} className="reset-password-form">
                         <div className="form-group">
                             <label htmlFor="newPassword">New Password</label>
@@ -102,7 +93,6 @@ const ResetPassword = () => {
                                 Password must be at least 8 characters long
                             </small>
                         </div>
-
                         <div className="form-group">
                             <label htmlFor="confirmPassword">Confirm New Password</label>
                             <input
@@ -116,7 +106,6 @@ const ResetPassword = () => {
                                 required
                             />
                         </div>
-
                         <div className="password-strength">
                             <div className="strength-indicators">
                                 <div className={`strength-indicator ${formData.newPassword.length >= 8 ? 'valid' : ''}`}>
@@ -127,7 +116,6 @@ const ResetPassword = () => {
                                 </div>
                             </div>
                         </div>
-
                         <button 
                             type="submit" 
                             disabled={isLoading || formData.newPassword !== formData.confirmPassword || formData.newPassword.length < 8}
@@ -136,7 +124,6 @@ const ResetPassword = () => {
                             {isLoading ? 'Resetting...' : 'Reset Password'}
                         </button>
                     </form>
-
                     <div className="reset-password-footer">
                         <p>
                             Remember your password? 
@@ -157,5 +144,4 @@ const ResetPassword = () => {
         </div>
     );
 };
-
 export default ResetPassword;

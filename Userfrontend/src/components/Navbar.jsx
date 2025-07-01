@@ -3,20 +3,16 @@ import { Link, NavLink } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { motion } from 'motion/react';
 import './Navbar.css';
-
 const menuLinks = [
     { name: "Home", path: "/" },
     { name: "Bikes", path: "/bikes" },
     { name: "About Us", path: "/about" },
     { name: "My Bookings", path: "/my-bookings" },
 ];
-
 const Navbar = () => {
     const { user, logout, setShowLogin } = useAppContext();
     const [isOpen, setIsOpen] = useState(false);
-
     const closeMenu = () => setIsOpen(false);
-
     return (
         <motion.nav 
             initial={{ y: -20, opacity: 0 }}
@@ -54,5 +50,4 @@ const Navbar = () => {
         </motion.nav>
     );
 };
-
 export default Navbar;

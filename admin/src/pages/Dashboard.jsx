@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import toast from 'react-hot-toast';
 import './Dashboard.css';
-
 const Dashboard = () => {
     const { axios } = useAppContext();
     const [dashboardData, setDashboardData] = useState({
@@ -14,7 +13,6 @@ const Dashboard = () => {
         bikeStats: []
     });
     const [loading, setLoading] = useState(true);
-
     const fetchDashboardData = async () => {
         try {
             const { data } = await axios.get('/api/admin/dashboard');
@@ -22,7 +20,7 @@ const Dashboard = () => {
                 setDashboardData({
                     totalBikes: data.dashboardData.totalBikes || 0,
                     totalBookings: data.dashboardData.totalBookings || 0,
-                    totalUsers: 0, // Not provided by backend yet
+totalUsers: 0,
                     totalRevenue: data.dashboardData.monthlyRevenue || 0,
                     recentBookings: data.dashboardData.recentBookings || [],
                     bikeStats: []
@@ -34,7 +32,6 @@ const Dashboard = () => {
         } catch (error) {
             toast.error('Error fetching dashboard data');
             console.error('Dashboard API error:', error);
-            // Set default values on error
             setDashboardData({
                 totalBikes: 0,
                 totalBookings: 0,
@@ -47,11 +44,9 @@ const Dashboard = () => {
             setLoading(false);
         }
     };
-
     useEffect(() => {
         fetchDashboardData();
     }, []);
-
     if (loading) {
         return (
             <div className="dashboard-loading">
@@ -60,14 +55,12 @@ const Dashboard = () => {
             </div>
         );
     }
-
     return (
         <div className="dashboard">
             <div className="dashboard-header">
                 <h1>📊 Dashboard Overview</h1>
                 <p>Welcome to your bike rental admin panel</p>
             </div>
-
             <div className="dashboard-stats">
                 <div className="stat-card">
                     <div className="stat-icon">🚴</div>
@@ -76,7 +69,6 @@ const Dashboard = () => {
                         <p>Total Bikes</p>
                     </div>
                 </div>
-
                 <div className="stat-card">
                     <div className="stat-icon">📋</div>
                     <div className="stat-content">
@@ -84,7 +76,6 @@ const Dashboard = () => {
                         <p>Total Bookings</p>
                     </div>
                 </div>
-
                 <div className="stat-card">
                     <div className="stat-icon">👥</div>
                     <div className="stat-content">
@@ -92,7 +83,6 @@ const Dashboard = () => {
                         <p>Total Users</p>
                     </div>
                 </div>
-
                 <div className="stat-card">
                     <div className="stat-icon">💰</div>
                     <div className="stat-content">
@@ -101,7 +91,6 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
-
             <div className="dashboard-content">
                 <div className="dashboard-section">
                     <h2>Recent Bookings</h2>
@@ -144,7 +133,6 @@ const Dashboard = () => {
                         )}
                     </div>
                 </div>
-
                 <div className="dashboard-section">
                     <h2>Quick Actions</h2>
                     <div className="quick-actions">
@@ -163,5 +151,4 @@ const Dashboard = () => {
         </div>
     );
 };
-
 export default Dashboard;

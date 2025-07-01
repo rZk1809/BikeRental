@@ -2,11 +2,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
-
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL || 'http://localhost:3000';
-
 export const AppContext = createContext();
-
 export const AppProvider = ({ children }) => {
     const navigate = useNavigate();
     const currency = import.meta.env.VITE_CURRENCY || '$';
@@ -14,7 +11,6 @@ export const AppProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [showLogin, setShowLogin] = useState(false);
     const [bikes, setBikes] = useState([]);
-
     const fetchUser = async (currentToken) => {
         try {
             const { data } = await axios.get('/api/user/data', {
@@ -25,7 +21,6 @@ export const AppProvider = ({ children }) => {
             console.error("Failed to fetch user");
         }
     };
-
     const fetchBikes = async () => {
         try {
             const { data } = await axios.get('/api/user/bikes');
@@ -34,7 +29,6 @@ export const AppProvider = ({ children }) => {
             toast.error("Could not fetch bikes.");
         }
     };
-
     const login = (newToken) => {
         localStorage.setItem('token', newToken);
         setToken(newToken);
@@ -52,7 +46,6 @@ export const AppProvider = ({ children }) => {
         toast.success('You have been logged out');
         navigate('/');
     };
-
     useEffect(() => {
         if (token) {
             axios.defaults.headers.common['Authorization'] = token;
@@ -60,20 +53,17 @@ export const AppProvider = ({ children }) => {
         }
         fetchBikes();
     }, [token]);
-
     const value = {
         navigate, currency, axios, user,
         token, login, logout,
         bikes, showLogin, setShowLogin
     };
-
     return (
         <AppContext.Provider value={value}>
             {children}
         </AppContext.Provider>
     );
 };
-
 export const useAppContext = () => {
     return useContext(AppContext);
 };

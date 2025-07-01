@@ -3,7 +3,6 @@ import { Outlet } from 'react-router-dom';
 import NavbarAdmin from '../components/NavbarAdmin';
 import Sidebar from '../components/Sidebar';
 import './Layout.css';
-
 const Layout = () => {
     return (
         <div className="admin-layout">
@@ -19,5 +18,4 @@ const Layout = () => {
         </div>
     );
 };
-
 export default Layout;

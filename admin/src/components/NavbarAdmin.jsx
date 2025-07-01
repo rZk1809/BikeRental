@@ -1,10 +1,8 @@
 import React from 'react';
 import { useAppContext } from '../context/AppContext';
 import './NavbarAdmin.css';
-
 const NavbarAdmin = () => {
     const { admin, logout } = useAppContext();
-
     return (
         <nav className="navbar-admin">
             <div className="navbar-admin-brand">
@@ -17,5 +15,4 @@ const NavbarAdmin = () => {
         </nav>
     );
 };
-
 export default NavbarAdmin;

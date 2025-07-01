@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 const {ObjectId} = mongoose.Schema.Types
-
 const bookingSchema = new mongoose.Schema({
     bike: {type: ObjectId, ref: "Bike", required: true},
     user: {type: ObjectId, ref: "User", required: true},
@@ -14,7 +13,5 @@ const bookingSchema = new mongoose.Schema({
     stripeSessionId: {type: String},
     paymentMethod: {type: String, default: "stripe"}
 },{timestamps: true})
-
 const Booking = mongoose.model('Booking', bookingSchema)
-
 export default Booking

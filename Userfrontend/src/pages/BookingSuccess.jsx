@@ -4,7 +4,6 @@ import { useAppContext } from '../context/AppContext';
 import { motion } from 'motion/react';
 import { toast } from 'react-hot-toast';
 import './BookingSuccess.css';
-
 const BookingSuccess = () => {
     const [searchParams] = useSearchParams();
     const { axios } = useAppContext();
@@ -12,7 +11,6 @@ const BookingSuccess = () => {
     const [verificationStatus, setVerificationStatus] = useState('verifying');
     const [booking, setBooking] = useState(null);
     const [message, setMessage] = useState('');
-
     useEffect(() => {
         const sessionId = searchParams.get('session_id');
         if (sessionId) {
@@ -22,7 +20,6 @@ const BookingSuccess = () => {
             setMessage('Invalid payment session');
         }
     }, [searchParams]);
-
     const verifyPayment = async (sessionId) => {
         try {
             const { data } = await axios.post('/api/bookings/verify-payment', { sessionId });
@@ -43,7 +40,6 @@ const BookingSuccess = () => {
             toast.error('Payment verification failed');
         }
     };
-
     return (
         <div className="booking-success-page">
             <div className="booking-success-container">
@@ -60,7 +56,6 @@ const BookingSuccess = () => {
                             <p>Please wait while we verify your payment...</p>
                         </div>
                     )}
-
                     {verificationStatus === 'success' && (
                         <div className="verification-status success">
                             <div className="success-icon">🎉</div>
@@ -105,7 +100,6 @@ const BookingSuccess = () => {
                             </div>
                         </div>
                     )}
-
                     {verificationStatus === 'error' && (
                         <div className="verification-status error">
                             <div className="error-icon">❌</div>
@@ -133,5 +127,4 @@ const BookingSuccess = () => {
         </div>
     );
 };
-
 export default BookingSuccess;

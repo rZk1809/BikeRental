@@ -16,10 +16,8 @@ import Footer from './components/Footer';
 import Login from './components/Login';
 import { Toaster } from 'react-hot-toast';
 import { useAppContext } from './context/AppContext';
-
 const App = () => {
     const { showLogin } = useAppContext();
-
     return (
         <>
             <Toaster position="top-center" reverseOrder={false} />
@@ -44,5 +42,4 @@ const App = () => {
         </>
     );
 };
-
 export default App;

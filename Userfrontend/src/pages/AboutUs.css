@@ -10,7 +10,7 @@
     padding: 0 2rem;
 }
 
-/* Hero Section */
+
 .about-hero {
     background: linear-gradient(135deg, rgba(255, 87, 34, 0.9), rgba(255, 87, 34, 0.7)),
                 url('https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=1200') center/cover;
@@ -36,7 +36,7 @@
     margin: 0 auto;
 }
 
-/* Our Story Section */
+
 .our-story {
     padding: 6rem 0;
     background-color: var(--color-dark-surface);
@@ -70,7 +70,7 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* Why Choose Us Section */
+
 .why-choose-us {
     padding: 6rem 0;
     background-color: var(--color-dark-bg);
@@ -120,7 +120,7 @@
     line-height: 1.6;
 }
 
-/* Our Locations Section */
+
 .our-locations {
     padding: 6rem 0;
     background-color: var(--color-dark-surface);
@@ -173,7 +173,7 @@
     font-weight: 600;
 }
 
-/* Contact Section */
+
 .contact-section {
     padding: 6rem 0;
     background-color: var(--color-dark-bg);
@@ -220,7 +220,7 @@
     font-size: 0.95rem;
 }
 
-/* Contact Form */
+
 .contact-form {
     background-color: var(--color-dark-surface);
     padding: 2rem;
@@ -293,7 +293,7 @@
     transform: none;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .container {
         padding: 0 1rem;

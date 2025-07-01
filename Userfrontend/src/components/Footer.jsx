@@ -2,10 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import './Footer.css';
-
 const Footer = () => {
     const currentYear = new Date().getFullYear();
-
     const footerLinks = {
         company: [
             { name: 'About Us', path: '/about' },
@@ -26,7 +24,6 @@ const Footer = () => {
             { name: 'Privacy Policy', path: '/privacy' }
         ]
     };
-
     return (
         <motion.footer
             initial={{ opacity: 0 }}
@@ -61,7 +58,6 @@ const Footer = () => {
                         </a>
                     </div>
                 </div>
-
                 <div className="footer-section">
                     <h3>Company</h3>
                     <ul>
@@ -72,7 +68,6 @@ const Footer = () => {
                         ))}
                     </ul>
                 </div>
-
                 <div className="footer-section">
                     <h3>Services</h3>
                     <ul>
@@ -83,7 +78,6 @@ const Footer = () => {
                         ))}
                     </ul>
                 </div>
-
                 <div className="footer-section">
                     <h3>Support</h3>
                     <ul>
@@ -94,7 +88,6 @@ const Footer = () => {
                         ))}
                     </ul>
                 </div>
-
                 <div className="footer-section footer-contact">
                     <h3>Get in Touch</h3>
                     <div className="contact-info">
@@ -113,7 +106,6 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
-
             <div className="footer-bottom">
                 <div className="footer-bottom-content">
                     <p>&copy; {currentYear} BikeRent. All rights reserved.</p>
@@ -127,5 +119,4 @@ const Footer = () => {
         </motion.footer>
     );
 };
-
 export default Footer;

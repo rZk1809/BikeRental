@@ -5,11 +5,9 @@ import { useAppContext } from '../context/AppContext';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import './FeaturedSection.css';
-
 const FeaturedSection = () => {
     const { bikes } = useAppContext();
     const navigate = useNavigate();
-
     return (
         <motion.section
             initial={{ opacity: 0, y: 50 }}
@@ -36,5 +34,4 @@ const FeaturedSection = () => {
         </motion.section>
     );
 };
-
 export default FeaturedSection;

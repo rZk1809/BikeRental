@@ -3,7 +3,6 @@ import { useAppContext } from '../context/AppContext';
 import { motion } from 'motion/react';
 import { toast } from 'react-hot-toast';
 import './Login.css';
-
 const Login = () => {
     const { setShowLogin, login, axios } = useAppContext();
     const [isLogin, setIsLogin] = useState(true);
@@ -15,7 +14,6 @@ const Login = () => {
         userEmail: ''
     });
     const [loading, setLoading] = useState(false);
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -23,19 +21,15 @@ const Login = () => {
             [name]: value
         }));
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-
         try {
             const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
             const payload = isLogin
                 ? { email: formData.email, password: formData.password }
                 : formData;
-
             const { data } = await axios.post(endpoint, payload);
-
             if (data.success) {
                 if (data.requiresVerification) {
                     toast.success(data.message);
@@ -48,7 +42,6 @@ const Login = () => {
             } else {
                 if (data.requiresVerification) {
                     toast.error(data.message);
-                    // Show resend verification option
                     setFormData(prev => ({ ...prev, showResendVerification: true, userEmail: data.email || formData.email }));
                 } else {
                     toast.error(data.message || 'Something went wrong');
@@ -60,19 +53,16 @@ const Login = () => {
             setLoading(false);
         }
     };
-
     const toggleMode = () => {
         setIsLogin(!isLogin);
         setFormData({ name: '', email: '', password: '', showResendVerification: false, userEmail: '' });
     };
-
     const handleResendVerification = async () => {
         setLoading(true);
         try {
             const { data } = await axios.post('/api/auth/resend-verification', {
                 email: formData.userEmail
             });
-
             if (data.success) {
                 toast.success(data.message);
                 setFormData(prev => ({ ...prev, showResendVerification: false }));
@@ -85,14 +75,10 @@ const Login = () => {
             setLoading(false);
         }
     };
-
-
-
     const handleForgotPassword = () => {
         setShowLogin(false);
         window.location.href = '/forgot-password';
     };
-
     return (
         <div className="login-overlay" onClick={(e) => e.target === e.currentTarget && setShowLogin(false)}>
             <motion.div
@@ -111,7 +97,6 @@ const Login = () => {
                         ×
                     </button>
                 </div>
-
                 <form onSubmit={handleSubmit} className="login-form">
                     {!isLogin && (
                         <div className="form-group">
@@ -127,7 +112,6 @@ const Login = () => {
                             />
                         </div>
                     )}
-
                     <div className="form-group">
                         <label htmlFor="email">Email Address</label>
                         <input
@@ -140,7 +124,6 @@ const Login = () => {
                             required
                         />
                     </div>
-
                     <div className="form-group">
                         <label htmlFor="password">Password</label>
                         <input
@@ -159,7 +142,6 @@ const Login = () => {
                             </small>
                         )}
                     </div>
-
                     <button
                         type="submit"
                         className="submit-button"
@@ -168,7 +150,6 @@ const Login = () => {
                         {loading ? 'Please wait...' : (isLogin ? 'Sign In' : 'Create Account')}
                     </button>
                 </form>
-
                 {formData.showResendVerification && (
                     <div className="verification-notice">
                         <p>Please verify your email to continue. Check your inbox for the verification link.</p>
@@ -181,7 +162,6 @@ const Login = () => {
                         </button>
                     </div>
                 )}
-
                 {isLogin && (
                     <div className="forgot-password-link">
                         <button
@@ -193,7 +173,6 @@ const Login = () => {
                         </button>
                     </div>
                 )}
-
                 <div className="login-footer">
                     <p>
                         {isLogin ? "Don't have an account? " : "Already have an account? "}
@@ -210,5 +189,4 @@ const Login = () => {
         </div>
     );
 };
-
 export default Login;

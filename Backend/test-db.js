@@ -4,8 +4,6 @@ import User from './models/User.js';
 import Booking from './models/Booking.js';
 import bcrypt from 'bcrypt';
 import 'dotenv/config';
-
-// Connect to database
 const connectDB = async () => {
     try {
         const mongoUri = process.env.MONGODB_URI.includes('/bike-rental') 
@@ -18,8 +16,6 @@ const connectDB = async () => {
         console.log(error.message);
     }
 };
-
-// Sample bikes data
 const sampleBikes = [
     {
         brand: "Honda",
@@ -232,15 +228,10 @@ const sampleBikes = [
         isAvailable: true
     }
 ];
-
-// Test function
 const testDatabase = async () => {
     await connectDB();
-
     try {
-        // Create or find admin user
         let adminUser = await User.findOne({ email: 'admin@bikerental.com' });
-
         if (!adminUser) {
             const hashedPassword = await bcrypt.hash('admin123456', 10);
             adminUser = await User.create({
@@ -255,30 +246,18 @@ const testDatabase = async () => {
         } else {
             console.log('Admin user already exists');
         }
-
-        // Clear existing bikes
         await Bike.deleteMany({});
         console.log('Cleared existing bikes');
-
-        // Add admin ID to sample bikes
         const bikesWithAdmin = sampleBikes.map(bike => ({
             ...bike,
             admin: adminUser._id
         }));
-
-        // Add sample bikes
         const bikes = await Bike.insertMany(bikesWithAdmin);
         console.log(`Added ${bikes.length} sample bikes linked to admin user`);
-
-        // Test fetching bikes
         const fetchedBikes = await Bike.find({ isAvailable: true });
         console.log(`Successfully fetched ${fetchedBikes.length} bikes from database`);
-
-        // Test fetching admin bikes
         const adminBikes = await Bike.find({ admin: adminUser._id });
         console.log(`Admin user has ${adminBikes.length} bikes`);
-
-        // Create a test user for bookings
         let testUser = await User.findOne({ email: 'test@example.com' });
         if (!testUser) {
             const hashedPassword = await bcrypt.hash('test123', 10);
@@ -292,24 +271,15 @@ const testDatabase = async () => {
             });
             console.log('Created test user: test@example.com / test123');
         }
-
-        // Clear existing bookings and users (except admin)
         await Booking.deleteMany({});
         await User.deleteMany({ role: { $ne: 'admin' } });
-
-        // Create sample bookings for both test user and any existing users
         if (bikes.length > 0) {
-            // Find your actual user
             const yourUser = await User.findOne({ email: 'rgk1809@gmail.com' });
-
-            // Helper function to calculate days
             const calculateDays = (pickup, returnDate) => {
                 const timeDiff = new Date(returnDate) - new Date(pickup);
                 return Math.max(1, Math.ceil(timeDiff / (1000 * 60 * 60 * 24)));
             };
-
             const sampleBookings = [
-                // Bookings for test user
                 {
                     bike: bikes[0]._id,
                     user: testUser._id,
@@ -329,13 +299,10 @@ const testDatabase = async () => {
                     price: bikes[1].pricePerDay * calculateDays('2025-07-05', '2025-07-07')
                 }
             ];
-
-            // Add bookings for your user if found
             if (yourUser && bikes.length >= 4) {
                 console.log(`Creating bookings for user: ${yourUser.email}`);
                 console.log(`Available bikes: ${bikes.length}`);
                 console.log(`Bike 2 price: ${bikes[2].pricePerDay}, Bike 3 price: ${bikes[3].pricePerDay}`);
-
                 sampleBookings.push(
                     {
                         bike: bikes[2]._id,
@@ -360,21 +327,17 @@ const testDatabase = async () => {
             } else if (yourUser) {
                 console.log(`Not enough bikes to create bookings for ${yourUser.email}`);
             }
-
             await Booking.insertMany(sampleBookings);
             console.log(`Created ${sampleBookings.length} sample bookings`);
         }
-
         console.log('\n✅ Database test completed successfully!');
         console.log('📧 Admin Login: admin@bikerental.com / admin123456');
         console.log('👤 Test User Login: test@example.com / test123');
         console.log('You can now login and test the complete system!');
-
     } catch (error) {
         console.error('Database test failed:', error);
     } finally {
         mongoose.connection.close();
     }
 };
-
 testDatabase();

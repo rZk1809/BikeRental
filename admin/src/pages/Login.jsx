@@ -2,20 +2,17 @@ import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import toast from 'react-hot-toast';
 import './Login.css';
-
 const Login = () => {
     const { login, axios } = useAppContext();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-
     const handleLogin = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         try {
             const { data } = await axios.post('/api/auth/login', { email, password });
             if (data.success) {
-                // Check if the user is an admin before logging in
                 const userResponse = await axios.get('/api/user/data', {
                     headers: { Authorization: data.token }
                 });
@@ -34,7 +31,6 @@ const Login = () => {
             setIsLoading(false);
         }
     };
-
     return (
         <div className="login-page">
             <div className="login-container">
@@ -79,5 +75,4 @@ const Login = () => {
         </div>
     );
 };
-
 export default Login;

@@ -4,18 +4,15 @@ import { useAppContext } from '../context/AppContext';
 import { motion } from 'motion/react';
 import { toast } from 'react-hot-toast';
 import './ForgotPassword.css';
-
 const ForgotPassword = () => {
     const { axios } = useAppContext();
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [emailSent, setEmailSent] = useState(false);
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-
         try {
             const { data } = await axios.post('/api/auth/forgot-password', { email });
             
@@ -31,7 +28,6 @@ const ForgotPassword = () => {
             setIsLoading(false);
         }
     };
-
     if (emailSent) {
         return (
             <div className="forgot-password-page">
@@ -77,7 +73,6 @@ const ForgotPassword = () => {
             </div>
         );
     }
-
     return (
         <div className="forgot-password-page">
             <div className="forgot-password-container">
@@ -91,7 +86,6 @@ const ForgotPassword = () => {
                         <h2>Forgot Password?</h2>
                         <p>Enter your email address and we'll send you a link to reset your password.</p>
                     </div>
-
                     <form onSubmit={handleSubmit} className="forgot-password-form">
                         <div className="form-group">
                             <label htmlFor="email">Email Address</label>
@@ -104,7 +98,6 @@ const ForgotPassword = () => {
                                 required
                             />
                         </div>
-
                         <button 
                             type="submit" 
                             disabled={isLoading}
@@ -113,7 +106,6 @@ const ForgotPassword = () => {
                             {isLoading ? 'Sending...' : 'Send Reset Link'}
                         </button>
                     </form>
-
                     <div className="forgot-password-footer">
                         <p>
                             Remember your password? 
@@ -131,5 +123,4 @@ const ForgotPassword = () => {
         </div>
     );
 };
-
 export default ForgotPassword;

@@ -2,16 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import toast from 'react-hot-toast';
 import './ManageBookings.css';
-
 const ManageBookings = () => {
     const { axios } = useAppContext();
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filterStatus, setFilterStatus] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
-
     const statusOptions = ['pending', 'confirmed', 'completed', 'cancelled'];
-
     const fetchBookings = async () => {
         try {
             const { data } = await axios.get('/api/bookings/admin');
@@ -26,7 +23,6 @@ const ManageBookings = () => {
             setLoading(false);
         }
     };
-
     const changeBookingStatus = async (bookingId, newStatus) => {
         try {
             const { data } = await axios.post('/api/bookings/change-status', {
@@ -35,7 +31,7 @@ const ManageBookings = () => {
             });
             if (data.success) {
                 toast.success('Booking status updated successfully');
-                fetchBookings(); // Refresh the list
+fetchBookings();
             } else {
                 toast.error(data.message || 'Failed to update booking status');
             }
@@ -43,11 +39,9 @@ const ManageBookings = () => {
             toast.error('Error updating booking status');
         }
     };
-
     useEffect(() => {
         fetchBookings();
     }, []);
-
     const filteredBookings = bookings.filter(booking => {
         const matchesStatus = filterStatus === '' || booking.status === filterStatus;
         const matchesSearch = 
@@ -56,7 +50,6 @@ const ManageBookings = () => {
             booking._id.toLowerCase().includes(searchTerm.toLowerCase());
         return matchesStatus && matchesSearch;
     });
-
     const getStatusColor = (status) => {
         switch (status) {
             case 'confirmed': return 'status-confirmed';
@@ -65,7 +58,6 @@ const ManageBookings = () => {
             default: return 'status-pending';
         }
     };
-
     if (loading) {
         return (
             <div className="manage-bookings-loading">
@@ -74,14 +66,12 @@ const ManageBookings = () => {
             </div>
         );
     }
-
     return (
         <div className="manage-bookings">
             <div className="manage-bookings-header">
                 <h1>📋 Manage Bookings</h1>
                 <p>View and manage all bike rental bookings</p>
             </div>
-
             <div className="manage-bookings-filters">
                 <div className="search-box">
                     <input
@@ -105,7 +95,6 @@ const ManageBookings = () => {
                     </select>
                 </div>
             </div>
-
             <div className="bookings-stats">
                 <div className="stat-item">
                     <span className="stat-number">{bookings.length}</span>
@@ -124,7 +113,6 @@ const ManageBookings = () => {
                     <span className="stat-label">Completed</span>
                 </div>
             </div>
-
             {filteredBookings.length === 0 ? (
                 <div className="no-bookings">
                     <p>No bookings found matching your criteria</p>
@@ -196,5 +184,4 @@ const ManageBookings = () => {
         </div>
     );
 };
-
 export default ManageBookings;

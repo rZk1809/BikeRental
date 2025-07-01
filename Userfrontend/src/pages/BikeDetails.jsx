@@ -4,7 +4,6 @@ import { useAppContext } from '../context/AppContext';
 import { motion } from 'motion/react';
 import { toast } from 'react-hot-toast';
 import './BikeDetails.css';
-
 const BikeDetails = () => {
     const { id } = useParams();
     const { bikes, currency, user, setShowLogin, axios } = useAppContext();
@@ -13,17 +12,14 @@ const BikeDetails = () => {
     const [pickupDate, setPickupDate] = useState('');
     const [returnDate, setReturnDate] = useState('');
     const [loading, setLoading] = useState(false);
-
     useEffect(() => {
         const foundBike = bikes.find(b => b._id === id);
         if (foundBike) {
             setBike(foundBike);
         } else {
-            // If bike not found in context, you could fetch it from API
             navigate('/bikes');
         }
     }, [id, bikes, navigate]);
-
     const handleBooking = async (e) => {
         e.preventDefault();
         
@@ -31,17 +27,14 @@ const BikeDetails = () => {
             setShowLogin(true);
             return;
         }
-
         if (!pickupDate || !returnDate) {
             toast.error('Please select pickup and return dates');
             return;
         }
-
         if (new Date(pickupDate) >= new Date(returnDate)) {
             toast.error('Return date must be after pickup date');
             return;
         }
-
         setLoading(true);
         try {
             const { data } = await axios.post('/api/bookings/create', {
@@ -49,10 +42,8 @@ const BikeDetails = () => {
                 pickupDate,
                 returnDate
             });
-
             if (data.success) {
                 toast.success('Redirecting to payment...');
-                // Redirect to Stripe checkout
                 window.location.href = data.paymentUrl;
             } else {
                 toast.error(data.message || 'Failed to create booking');
@@ -64,7 +55,6 @@ const BikeDetails = () => {
             setLoading(false);
         }
     };
-
     if (!bike) {
         return (
             <div className="bike-details-loading">
@@ -73,7 +63,6 @@ const BikeDetails = () => {
             </div>
         );
     }
-
     const calculateDays = () => {
         if (pickupDate && returnDate) {
             const pickup = new Date(pickupDate);
@@ -84,9 +73,7 @@ const BikeDetails = () => {
         }
         return 0;
     };
-
     const totalPrice = calculateDays() * bike.pricePerDay;
-
     return (
         <div className='bike-details'>
             <div className="bike-details-container">
@@ -110,7 +97,6 @@ const BikeDetails = () => {
                                 <span className="period"> / day</span>
                             </div>
                         </div>
-
                         <div className="bike-specs">
                             <h3>Specifications</h3>
                             <div className="specs-grid">
@@ -132,12 +118,10 @@ const BikeDetails = () => {
                                 </div>
                             </div>
                         </div>
-
                         <div className="bike-description">
                             <h3>Description</h3>
                             <p>{bike.description}</p>
                         </div>
-
                         {bike.isAvailable && (
                             <form onSubmit={handleBooking} className="booking-form">
                                 <h3>Book This Bike</h3>
@@ -188,5 +172,4 @@ const BikeDetails = () => {
         </div>
     );
 };
-
 export default BikeDetails;

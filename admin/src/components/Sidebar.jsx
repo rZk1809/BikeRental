@@ -1,14 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
-
 const adminMenuLinks = [
     { name: "📊 Dashboard", path: "/" },
     { name: "➕ Add Bike", path: "/add-bike" },
     { name: "🚴 Manage Bikes", path: "/manage-bikes" },
     { name: "📋 Manage Bookings", path: "/manage-bookings" },
 ];
-
 const Sidebar = () => {
     return (
         <aside className="sidebar">
@@ -30,5 +28,4 @@ const Sidebar = () => {
         </aside>
     );
 };
-
 export default Sidebar;

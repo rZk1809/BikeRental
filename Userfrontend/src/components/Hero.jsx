@@ -2,20 +2,16 @@ import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { motion } from 'motion/react';
 import './Hero.css';
-
 const cityList = ['Chennai', 'Dubai', 'Bangalore'];
-
 const Hero = () => {
     const { navigate } = useAppContext();
     const [pickupLocation, setPickupLocation] = useState('');
     const [pickupDate, setPickupDate] = useState('');
     const [returnDate, setReturnDate] = useState('');
-
     const handleSearch = (e) => {
         e.preventDefault();
         navigate(`/bikes?pickupLocation=${pickupLocation}&pickupDate=${pickupDate}&returnDate=${returnDate}`);
     };
-
     return (
         <div className='hero'>
             <div className="hero-overlay"></div>
@@ -53,5 +49,4 @@ const Hero = () => {
         </div>
     );
 };
-
 export default Hero;

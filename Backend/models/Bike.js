@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 const {ObjectId} = mongoose.Schema.Types
-
 const bikeSchema = new mongoose.Schema({
     admin: {type: ObjectId, ref: 'User'},
     brand: {type: String, required: true},
@@ -16,7 +15,5 @@ const bikeSchema = new mongoose.Schema({
     description: { type: String, required: true },
     isAvailable: {type: Boolean, default: true}
 },{timestamps: true})
-
 const Bike = mongoose.model('Bike', bikeSchema)
-
 export default Bike

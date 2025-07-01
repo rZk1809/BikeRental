@@ -9,9 +9,7 @@ import {
     getBookingBySessionId
 } from "../controllers/bookingController.js";
 import { protect } from "../middleware/auth.js";
-
 const bookingRouter = express.Router();
-
 bookingRouter.post('/check-availability', checkAvailabilityOfBike)
 bookingRouter.post('/create', protect, createBooking)
 bookingRouter.get('/user', protect, getUserBookings)
@@ -19,12 +17,9 @@ bookingRouter.get('/admin', protect, getAdminBookings)
 bookingRouter.post('/change-status', protect, changeBookingStatus)
 bookingRouter.post('/verify-payment', protect, verifyPaymentAndUpdateBooking)
 bookingRouter.get('/session/:sessionId', protect, getBookingBySessionId)
-
-// Test Stripe connection
 bookingRouter.get('/test-stripe', async (req, res) => {
     try {
         const { createCheckoutSession } = await import('../services/stripeService.js');
-
         const testData = {
             bikeDetails: {
                 bikeId: 'test',
@@ -43,12 +38,10 @@ bookingRouter.get('/test-stripe', async (req, res) => {
             },
             amount: 100
         };
-
         const result = await createCheckoutSession(testData);
         res.json({ success: true, result });
     } catch (error) {
         res.json({ success: false, error: error.message });
     }
 });
-
 export default bookingRouter;

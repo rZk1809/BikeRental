@@ -4,20 +4,16 @@ import { useAppContext } from '../context/AppContext';
 import { motion } from 'motion/react';
 import { toast } from 'react-hot-toast';
 import './AuthSuccess.css';
-
 const AuthSuccess = () => {
     const [searchParams] = useSearchParams();
     const { login } = useAppContext();
     const navigate = useNavigate();
-
     useEffect(() => {
         const token = searchParams.get('token');
         if (token) {
-            // Auto login the user with the token from Google OAuth
             login(token);
             toast.success('Successfully signed in with Google!');
             
-            // Redirect to homepage after a short delay
             setTimeout(() => {
                 navigate('/');
             }, 2000);
@@ -26,7 +22,6 @@ const AuthSuccess = () => {
             navigate('/');
         }
     }, [searchParams, login, navigate]);
-
     return (
         <div className="auth-success-page">
             <div className="auth-success-container">
@@ -63,5 +58,4 @@ const AuthSuccess = () => {
         </div>
     );
 };
-
 export default AuthSuccess;

@@ -5,7 +5,7 @@
 
 .admin-content {
     display: flex;
-    min-height: calc(100vh - 80px); /* Adjust based on navbar height */
+    min-height: calc(100vh - 80px); 
 }
 
 .admin-main {

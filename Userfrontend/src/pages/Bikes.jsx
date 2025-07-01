@@ -5,7 +5,6 @@ import BikeCard from '../components/BikeCard';
 import Title from '../components/Title';
 import { motion } from 'motion/react';
 import './Bikes.css';
-
 const Bikes = () => {
     const { bikes } = useAppContext();
     const [searchParams] = useSearchParams();
@@ -16,15 +15,11 @@ const Bikes = () => {
         priceRange: '',
         fuelType: ''
     });
-
     const categories = [...new Set(bikes.map(bike => bike.category))];
     const locations = [...new Set(bikes.map(bike => bike.location))];
     const fuelTypes = [...new Set(bikes.map(bike => bike.fuel_type))];
-
     useEffect(() => {
         let filtered = bikes.filter(bike => bike.isAvailable);
-
-        // Apply filters
         if (filters.category) {
             filtered = filtered.filter(bike => bike.category === filters.category);
         }
@@ -44,25 +39,20 @@ const Bikes = () => {
                 }
             });
         }
-
-        // Apply search params from Hero component
         const pickupLocation = searchParams.get('pickupLocation');
         if (pickupLocation) {
             filtered = filtered.filter(bike => 
                 bike.location.toLowerCase().includes(pickupLocation.toLowerCase())
             );
         }
-
         setFilteredBikes(filtered);
     }, [bikes, filters, searchParams]);
-
     const handleFilterChange = (filterType, value) => {
         setFilters(prev => ({
             ...prev,
             [filterType]: value
         }));
     };
-
     const clearFilters = () => {
         setFilters({
             category: '',
@@ -71,7 +61,6 @@ const Bikes = () => {
             fuelType: ''
         });
     };
-
     return (
         <div className='bikes-page'>
             <div className="bikes-container">
@@ -79,7 +68,6 @@ const Bikes = () => {
                     title="Available Bikes" 
                     subTitle="Find the perfect bike for your next adventure" 
                 />
-
                 <div className="bikes-content">
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
@@ -93,7 +81,6 @@ const Bikes = () => {
                                 Clear All
                             </button>
                         </div>
-
                         <div className="filter-group">
                             <label>Category</label>
                             <select 
@@ -106,7 +93,6 @@ const Bikes = () => {
                                 ))}
                             </select>
                         </div>
-
                         <div className="filter-group">
                             <label>Location</label>
                             <select 
@@ -119,7 +105,6 @@ const Bikes = () => {
                                 ))}
                             </select>
                         </div>
-
                         <div className="filter-group">
                             <label>Fuel Type</label>
                             <select 
@@ -132,7 +117,6 @@ const Bikes = () => {
                                 ))}
                             </select>
                         </div>
-
                         <div className="filter-group">
                             <label>Price Range (per day)</label>
                             <select 
@@ -147,7 +131,6 @@ const Bikes = () => {
                             </select>
                         </div>
                     </motion.div>
-
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -157,7 +140,6 @@ const Bikes = () => {
                         <div className="bikes-results-header">
                             <p>{filteredBikes.length} bike(s) found</p>
                         </div>
-
                         {filteredBikes.length > 0 ? (
                             <div className="bikes-grid">
                                 {filteredBikes.map((bike, index) => (
@@ -186,5 +168,4 @@ const Bikes = () => {
         </div>
     );
 };
-
 export default Bikes;

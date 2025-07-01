@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import toast from 'react-hot-toast';
 import './ManageBikes.css';
-
 const ManageBikes = () => {
     const { axios, navigate } = useAppContext();
     const [bikes, setBikes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterCategory, setFilterCategory] = useState('');
-
     const categories = [
         'Mountain Bike',
         'Road Bike',
@@ -19,7 +17,6 @@ const ManageBikes = () => {
         'Cruiser',
         'Folding Bike'
     ];
-
     const fetchBikes = async () => {
         try {
             const { data } = await axios.get('/api/admin/bikes');
@@ -34,13 +31,12 @@ const ManageBikes = () => {
             setLoading(false);
         }
     };
-
     const toggleBikeAvailability = async (bikeId) => {
         try {
             const { data } = await axios.post('/api/admin/toggle-bike', { bikeId });
             if (data.success) {
                 toast.success('Bike availability updated');
-                fetchBikes(); // Refresh the list
+fetchBikes();
             } else {
                 toast.error(data.message || 'Failed to update bike');
             }
@@ -48,14 +44,13 @@ const ManageBikes = () => {
             toast.error('Error updating bike');
         }
     };
-
     const deleteBike = async (bikeId) => {
         if (window.confirm('Are you sure you want to delete this bike?')) {
             try {
                 const { data } = await axios.post('/api/admin/delete-bike', { bikeId });
                 if (data.success) {
                     toast.success('Bike deleted successfully');
-                    fetchBikes(); // Refresh the list
+fetchBikes();
                 } else {
                     toast.error(data.message || 'Failed to delete bike');
                 }
@@ -64,11 +59,9 @@ const ManageBikes = () => {
             }
         }
     };
-
     useEffect(() => {
         fetchBikes();
     }, []);
-
     const filteredBikes = bikes.filter(bike => {
         const matchesSearch = (bike.brand?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
                             (bike.model?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
@@ -76,7 +69,6 @@ const ManageBikes = () => {
         const matchesCategory = filterCategory === '' || bike.category === filterCategory;
         return matchesSearch && matchesCategory;
     });
-
     if (loading) {
         return (
             <div className="manage-bikes-loading">
@@ -85,7 +77,6 @@ const ManageBikes = () => {
             </div>
         );
     }
-
     return (
         <div className="manage-bikes">
             <div className="manage-bikes-header">
@@ -100,7 +91,6 @@ const ManageBikes = () => {
                     ➕ Add New Bike
                 </button>
             </div>
-
             <div className="manage-bikes-filters">
                 <div className="search-box">
                     <input
@@ -122,7 +112,6 @@ const ManageBikes = () => {
                     </select>
                 </div>
             </div>
-
             <div className="bikes-stats">
                 <div className="stat-item">
                     <span className="stat-number">{bikes.length}</span>
@@ -137,7 +126,6 @@ const ManageBikes = () => {
                     <span className="stat-label">Unavailable</span>
                 </div>
             </div>
-
             {filteredBikes.length === 0 ? (
                 <div className="no-bikes">
                     <p>No bikes found matching your criteria</p>
@@ -192,5 +180,4 @@ const ManageBikes = () => {
         </div>
     );
 };
-
 export default ManageBikes;

@@ -157,7 +157,7 @@
     text-decoration: underline;
 }
 
-/* Email Verification Notice */
+
 .verification-notice {
     background-color: rgba(255, 87, 34, 0.1);
     border: 1px solid var(--color-primary);
@@ -196,7 +196,7 @@
 
 
 
-/* Forgot Password Link */
+
 .forgot-password-link {
     text-align: center;
     margin-top: 1rem;

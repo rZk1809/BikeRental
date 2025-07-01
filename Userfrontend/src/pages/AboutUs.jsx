@@ -4,7 +4,6 @@ import journeyImage from '../assets/journey2.jpg';
 import { toast } from 'react-hot-toast';
 import { useAppContext } from '../context/AppContext';
 import './AboutUs.css';
-
 const AboutUs = () => {
     const { axios } = useAppContext();
     const [contactForm, setContactForm] = useState({
@@ -14,7 +13,6 @@ const AboutUs = () => {
         message: ''
     });
     const [loading, setLoading] = useState(false);
-
     const handleContactSubmit = async (e) => {
         e.preventDefault();
         
@@ -22,7 +20,6 @@ const AboutUs = () => {
             toast.error('Please fill in all required fields');
             return;
         }
-
         setLoading(true);
         try {
             toast.success('Thank you for your message! We\'ll get back to you soon.');
@@ -33,17 +30,15 @@ const AboutUs = () => {
             setLoading(false);
         }
     };
-
     const handleInputChange = (e) => {
         setContactForm({
             ...contactForm,
             [e.target.name]: e.target.value
         });
     };
-
     return (
         <div className="about-us">
-            {/* Hero Section */}
+            {}
             <motion.section 
                 className="about-hero"
                 initial={{ opacity: 0, y: 30 }}
@@ -55,8 +50,7 @@ const AboutUs = () => {
                     <p>Your trusted partner for premium bike rentals across India</p>
                 </div>
             </motion.section>
-
-            {/* Our Story Section */}
+            {}
             <motion.section 
                 className="our-story"
                 initial={{ opacity: 0, y: 30 }}
@@ -127,7 +121,6 @@ const AboutUs = () => {
                     </div>
                 </div>
             </motion.section>
-
             <motion.section 
                 className="our-locations"
                 initial={{ opacity: 0, y: 30 }}
@@ -160,7 +153,6 @@ const AboutUs = () => {
                     </div>
                 </div>
             </motion.section>
-
             <motion.section 
                 className="contact-section"
                 initial={{ opacity: 0, y: 30 }}
@@ -192,7 +184,6 @@ const AboutUs = () => {
                                 </div>
                             </div>
                         </div>
-
                         <form className="contact-form" onSubmit={handleContactSubmit}>
                             <h3>Send us a Message</h3>
                             <div className="form-row">
@@ -246,5 +237,4 @@ const AboutUs = () => {
         </div>
     );
 };
-
 export default AboutUs;

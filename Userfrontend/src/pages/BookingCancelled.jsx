@@ -2,10 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import './BookingCancelled.css';
-
 const BookingCancelled = () => {
     const navigate = useNavigate();
-
     return (
         <div className="booking-cancelled-page">
             <div className="booking-cancelled-container">
@@ -51,5 +49,4 @@ const BookingCancelled = () => {
         </div>
     );
 };
-
 export default BookingCancelled;

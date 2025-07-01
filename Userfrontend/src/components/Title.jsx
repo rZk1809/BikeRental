@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import './Title.css';
-
 const Title = ({ title, subTitle }) => {
     return (
         <div className='title-section'>
@@ -26,5 +25,4 @@ const Title = ({ title, subTitle }) => {
         </div>
     );
 };
-
 export default Title;

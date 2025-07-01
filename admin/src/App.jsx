@@ -8,17 +8,12 @@ import ManageBookings from './pages/ManageBookings';
 import Login from './pages/Login';
 import { Toaster } from 'react-hot-toast';
 import { useAppContext } from './context/AppContext';
-
 const App = () => {
     const { token } = useAppContext();
     const location = useLocation();
-
-    // If not logged in and not on the login page, redirect to login
     if (!token && location.pathname !== '/login') {
         return <Navigate to="/login" />;
     }
-
-    // If logged in and on the login page, redirect to dashboard
     if (token && location.pathname === '/login') {
         return <Navigate to="/" />;
     }
@@ -38,5 +33,4 @@ const App = () => {
         </>
     );
 };
-
 export default App;

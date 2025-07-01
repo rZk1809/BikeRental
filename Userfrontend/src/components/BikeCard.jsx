@@ -2,11 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import './BikeCard.css';
-
 const BikeCard = ({ bike }) => {
     const { currency } = useAppContext();
     const navigate = useNavigate();
-
     return (
         <div className='bike-card' onClick={() => navigate(`/bike-details/${bike._id}`)}>
             <div className='bike-card-image-wrapper'>
@@ -26,5 +24,4 @@ const BikeCard = ({ bike }) => {
         </div>
     );
 };
-
 export default BikeCard;

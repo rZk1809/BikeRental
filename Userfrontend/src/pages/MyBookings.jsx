@@ -5,13 +5,11 @@ import Title from '../components/Title';
 import { motion } from 'motion/react';
 import { toast } from 'react-hot-toast';
 import './MyBookings.css';
-
 const MyBookings = () => {
     const { user, setShowLogin, axios, currency } = useAppContext();
     const navigate = useNavigate();
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         if (!user) {
             setShowLogin(true);
@@ -19,7 +17,6 @@ const MyBookings = () => {
         }
         fetchBookings();
     }, [user, setShowLogin]);
-
     const fetchBookings = async () => {
         try {
             const { data } = await axios.get('/api/bookings/user');
@@ -34,7 +31,6 @@ const MyBookings = () => {
             setLoading(false);
         }
     };
-
     const getStatusColor = (status) => {
         switch (status) {
             case 'confirmed': return 'status-confirmed';
@@ -43,7 +39,6 @@ const MyBookings = () => {
             default: return 'status-pending';
         }
     };
-
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -51,7 +46,6 @@ const MyBookings = () => {
             day: 'numeric'
         });
     };
-
     const calculateDays = (pickupDate, returnDate) => {
         const pickup = new Date(pickupDate);
         const returnD = new Date(returnDate);
@@ -59,11 +53,9 @@ const MyBookings = () => {
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         return diffDays;
     };
-
     if (!user) {
-        return null; // Will redirect to login
+return null;
     }
-
     if (loading) {
         return (
             <div className="my-bookings-loading">
@@ -72,7 +64,6 @@ const MyBookings = () => {
             </div>
         );
     }
-
     return (
         <div className='my-bookings'>
             <div className="my-bookings-container">
@@ -80,7 +71,6 @@ const MyBookings = () => {
                     title="My Bookings" 
                     subTitle="Track and manage your bike rental history" 
                 />
-
                 {bookings.length > 0 ? (
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -104,7 +94,6 @@ const MyBookings = () => {
                                         {booking.status}
                                     </div>
                                 </div>
-
                                 <div className="booking-content">
                                     <div className="bike-info">
                                         {booking.bike && (
@@ -122,7 +111,6 @@ const MyBookings = () => {
                                             </>
                                         )}
                                     </div>
-
                                     <div className="booking-details">
                                         <div className="detail-row">
                                             <span className="label">Pickup Date:</span>
@@ -177,5 +165,4 @@ const MyBookings = () => {
         </div>
     );
 };
-
 export default MyBookings;
