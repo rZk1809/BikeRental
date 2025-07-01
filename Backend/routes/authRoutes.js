@@ -83,7 +83,7 @@ authRouter.post('/verify-email', async (req, res) => {
         res.json({ success: false, message: "Server error" });
     }
 });
-authRouter.get('/test-verify/:token', async (req, res) => {
+authRouter.get('/verify-email/:token', async (req, res) => {
     try {
         const { token } = req.params;
 
@@ -93,11 +93,7 @@ authRouter.get('/test-verify/:token', async (req, res) => {
         });
 
         if (!user) {
-            return res.json({
-                success: false,
-                message: "Invalid or expired verification token",
-                token: token
-            });
+            return res.redirect(`${process.env.FRONTEND_URL}/verify-email?error=invalid_token`);
         }
 
         user.isEmailVerified = true;
@@ -109,22 +105,11 @@ authRouter.get('/test-verify/:token', async (req, res) => {
 
         const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-        res.json({
-            success: true,
-            message: "Email verified successfully! Welcome to BikeRent!",
-            token: jwtToken,
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                isEmailVerified: user.isEmailVerified
-            }
-        });
+        return res.redirect(`${process.env.FRONTEND_URL}/verify-email?success=true&token=${jwtToken}&name=${encodeURIComponent(user.name)}`);
 
     } catch (error) {
-        console.error('Test verification error:', error);
-        res.json({ success: false, message: "Server error" });
+        console.error('Email verification error:', error);
+        return res.redirect(`${process.env.FRONTEND_URL}/verify-email?error=server_error`);
     }
 });
 
