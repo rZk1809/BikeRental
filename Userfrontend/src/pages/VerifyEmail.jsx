@@ -8,18 +8,40 @@ const VerifyEmail = () => {
     const [searchParams] = useSearchParams();
     const { axios, login } = useAppContext();
     const navigate = useNavigate();
-    const [verificationStatus, setVerificationStatus] = useState('verifying'); // verifying, success, error
+    const [verificationStatus, setVerificationStatus] = useState('verifying'); 
     const [message, setMessage] = useState('');
     const [resendEmail, setResendEmail] = useState('');
     const [isResending, setIsResending] = useState(false);
     useEffect(() => {
+        const success = searchParams.get('success');
+        const error = searchParams.get('error');
         const token = searchParams.get('token');
-        console.log('Token from URL:', token); // Debug log
-        if (token) {
-            verifyEmail(token);
-        } else {
+        const name = searchParams.get('name');
+
+        if (success === 'true' && token) {
+            setVerificationStatus('success');
+            setMessage(`Welcome ${decodeURIComponent(name || 'User')}! Your email has been verified successfully.`);
+            login(token);
+            setTimeout(() => {
+                navigate('/');
+            }, 3000);
+        } else if (error) {
             setVerificationStatus('error');
-            setMessage('Invalid verification link');
+            if (error === 'invalid_token') {
+                setMessage('Invalid or expired verification token');
+            } else if (error === 'server_error') {
+                setMessage('Server error occurred during verification');
+            } else {
+                setMessage('Verification failed');
+            }
+        } else {
+            const oldToken = searchParams.get('token');
+            if (oldToken) {
+                verifyEmail(oldToken);
+            } else {
+                setVerificationStatus('error');
+                setMessage('Invalid verification link');
+            }
         }
     }, [searchParams]);
     const verifyEmail = async (token) => {
