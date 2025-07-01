@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import Title from '../components/Title';
 import { motion } from 'motion/react';
@@ -7,6 +8,7 @@ import './MyBookings.css';
 
 const MyBookings = () => {
     const { user, setShowLogin, axios, currency } = useAppContext();
+    const navigate = useNavigate();
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -163,8 +165,8 @@ const MyBookings = () => {
                         <div className="no-bookings-icon">🚴‍♂️</div>
                         <h3>No bookings yet</h3>
                         <p>You haven't made any bike bookings yet. Start exploring our available bikes!</p>
-                        <button 
-                            onClick={() => window.location.href = '/bikes'} 
+                        <button
+                            onClick={() => navigate('/bikes')}
                             className="browse-bikes-btn"
                         >
                             Browse Bikes
