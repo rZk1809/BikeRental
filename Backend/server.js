@@ -16,7 +16,15 @@ const app = express()
 await connectDB()
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: [
+        'https://userfrontend-ktet.onrender.com',
+        'https://adminfrontend-39ew.onrender.com',
+        'http://localhost:5173',
+        'http://localhost:5174'
+    ],
+    credentials: true
+}));
 app.use(express.json());
 
 // Session middleware for Passport
@@ -24,7 +32,11 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'your-session-secret',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // Set to true in production with HTTPS
+    cookie: {
+        secure: process.env.NODE_ENV === 'production', // true in production with HTTPS
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
 }));
 
 // Initialize Passport
