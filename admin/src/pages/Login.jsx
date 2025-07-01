@@ -13,7 +13,7 @@ const Login = () => {
         e.preventDefault();
         setIsLoading(true);
         try {
-            const { data } = await axios.post('/api/user/login', { email, password });
+            const { data } = await axios.post('/api/auth/login', { email, password });
             if (data.success) {
                 // Check if the user is an admin before logging in
                 const userResponse = await axios.get('/api/user/data', {
