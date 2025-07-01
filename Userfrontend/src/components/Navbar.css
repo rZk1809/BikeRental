@@ -1,0 +1,133 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background-color: var(--color-dark-surface);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar-logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--color-primary);
+}
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.navbar-links ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-links a {
+    color: var(--color-text-muted);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar-links a.active {
+    color: var(--color-primary);
+}
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.list-bike-button {
+    background-color: transparent;
+    color: var(--color-text-light);
+    border: 1px solid var(--color-border);
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.list-bike-button:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.login-button {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: var(--color-primary-dull);
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.hamburger .line {
+    width: 25px;
+    height: 3px;
+    background-color: var(--color-text-light);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .navbar-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--color-dark-surface);
+        flex-direction: column;
+        padding: 1rem;
+        border-bottom: 1px solid var(--color-border);
+    }
+    
+    .navbar-links.open {
+        display: flex;
+    }
+    
+    .navbar-links ul {
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .navbar-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+    }
+    
+    .list-bike-button,
+    .login-button {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .hamburger {
+        display: flex;
+    }
+}

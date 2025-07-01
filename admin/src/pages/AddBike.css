@@ -1,0 +1,140 @@
+.add-bike {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.add-bike-header {
+    margin-bottom: 2rem;
+}
+
+.add-bike-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-light);
+}
+
+.add-bike-header p {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.add-bike-content {
+    background-color: var(--color-dark-surface);
+    border-radius: 12px;
+    padding: 2rem;
+    border: 1px solid var(--color-border);
+}
+
+.add-bike-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 0.5rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: #2d3748;
+    color: var(--color-text-light);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.image-preview {
+    margin-top: 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 300px;
+}
+
+.image-preview img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    color: var(--color-text-light);
+    font-weight: 500;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.form-actions .btn {
+    padding: 0.75rem 2rem;
+    font-weight: 500;
+    min-width: 120px;
+}
+
+@media (max-width: 768px) {
+    .add-bike-header h1 {
+        font-size: 2rem;
+    }
+    
+    .add-bike-content {
+        padding: 1.5rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+    
+    .form-actions .btn {
+        width: 100%;
+    }
+}

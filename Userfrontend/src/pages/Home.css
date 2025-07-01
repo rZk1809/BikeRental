@@ -1,0 +1,10 @@
+.home {
+    min-height: 100vh;
+    background-color: var(--color-dark-bg);
+}
+
+@media (max-width: 768px) {
+    .home {
+        padding-top: 0;
+    }
+}
