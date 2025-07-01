@@ -1,22 +1,24 @@
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
+
 const createTransporter = () => {
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
         console.log('Email credentials not provided - emails will be logged to console');
         return null;
     }
+
     try {
         return nodemailer.createTransport({
             host: 'smtp-relay.brevo.com',
             port: 587,
-secure: false,
+            secure: false, 
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS
             },
             headers: {
                 'X-Brevo-Tags': 'verification',
-                'X-Brevo-Disable-Tracking': 'true' // Disable click tracking
+                'X-Brevo-Disable-Tracking': 'true' 
             }
         });
     } catch (error) {
@@ -24,28 +26,34 @@ secure: false,
         return null;
     }
 };
+
 export const generateVerificationToken = () => {
     return crypto.randomBytes(32).toString('hex');
 };
+
 export const generatePasswordResetToken = () => {
     return crypto.randomBytes(32).toString('hex');
 };
+
 export const sendVerificationEmail = async (email, name, token) => {
     const transporter = createTransporter();
-    const frontendUrl = process.env.FRONTEND_URL.replace(/\/$/, ''); // Remove trailing slash
-    const verificationUrl = `${frontendUrl}/verify-email?token=${token}`;
+
+    const backendUrl = process.env.BACKEND_URL || 'https://backend-bnq7.onrender.com';
+    const verificationUrl = `${backendUrl}/api/auth/verify-email/${token}`;
+
     if (!transporter) {
         console.log('\n=== EMAIL VERIFICATION (Development Mode) ===');
         console.log(`To: ${email}`);
         console.log(`Name: ${name}`);
         console.log(`Verification URL: ${verificationUrl}`);
         console.log('=== Copy the URL above to verify your email ===\n');
-return true;
+        return true; 
     }
+
     const mailOptions = {
         from: {
             name: 'BikeRent',
-            address: 'rgk1809@gmail.com' // Use a proper from address
+            address: 'rgk1809@gmail.com' 
         },
         to: email,
         subject: 'Verify Your Email - BikeRent',
@@ -55,12 +63,17 @@ return true;
         },
         text: `
 Hi ${name}!
+
 Thank you for signing up with BikeRent!
+
 To complete your registration, please click this link to verify your email:
 ${verificationUrl}
+
 Or copy and paste this URL into your browser:
 ${verificationUrl}
+
 This verification link will expire in 24 hours.
+
 Best regards,
 BikeRent Team
         `,
@@ -70,23 +83,27 @@ BikeRent Team
                     <h1 style="margin: 0; color: white; font-size: 2rem;">🚴 BikeRent</h1>
                     <p style="margin: 0.5rem 0 0 0; color: rgba(255,255,255,0.9);">Welcome to the adventure!</p>
                 </div>
+
                 <div style="padding: 2rem;">
                     <h2 style="color: #FF5722; margin-bottom: 1rem;">Hi ${name}!</h2>
                     <p style="line-height: 1.6; margin-bottom: 1.5rem;">
                         Thank you for signing up with BikeRent! To complete your registration and start exploring our amazing bikes, please verify your email address.
                     </p>
+
                     <div style="text-align: center; margin: 2rem 0;">
                         <a href="${verificationUrl}"
                            style="background-color: #FF5722; color: white; padding: 1rem 2rem; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">
                             Verify Email Address
                         </a>
                     </div>
+
                     <p style="font-size: 0.9rem; color: #9ca3af; margin-bottom: 1rem;">
                         If the button doesn't work, copy and paste this link into your browser:
                     </p>
                     <p style="word-break: break-all; background-color: #374151; padding: 1rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem;">
                         ${verificationUrl}
                     </p>
+
                     <div style="border-top: 1px solid #374151; margin-top: 2rem; padding-top: 1rem;">
                         <p style="font-size: 0.8rem; color: #9ca3af; margin: 0;">
                             This verification link will expire in 24 hours. If you didn't create an account with BikeRent, please ignore this email.
@@ -96,6 +113,7 @@ BikeRent Team
             </div>
         `
     };
+
     try {
         await transporter.sendMail(mailOptions);
         console.log('Verification email sent successfully');
@@ -105,18 +123,22 @@ BikeRent Team
         return false;
     }
 };
+
 export const sendPasswordResetEmail = async (email, name, token) => {
     const transporter = createTransporter();
-    const frontendUrl = process.env.FRONTEND_URL.replace(/\/$/, ''); // Remove trailing slash
+
+    const frontendUrl = process.env.FRONTEND_URL.replace(/\/$/, ''); 
     const resetUrl = `${frontendUrl}/reset-password?token=${token}`;
+
     if (!transporter) {
         console.log('\n=== PASSWORD RESET (Development Mode) ===');
         console.log(`To: ${email}`);
         console.log(`Name: ${name}`);
         console.log(`Reset URL: ${resetUrl}`);
         console.log('=== Copy the URL above to reset your password ===\n');
-return true;
+        return true; 
     }
+
     const mailOptions = {
         from: {
             name: 'BikeRent',
@@ -160,6 +182,7 @@ return true;
             </div>
         `
     };
+
     try {
         await transporter.sendMail(mailOptions);
         console.log('Password reset email sent successfully');
@@ -169,15 +192,18 @@ return true;
         return false;
     }
 };
+
 export const sendWelcomeEmail = async (email, name) => {
     const transporter = createTransporter();
+
     if (!transporter) {
         console.log('\n=== WELCOME EMAIL (Development Mode) ===');
         console.log(`To: ${email}`);
         console.log(`Welcome ${name}! Your email has been verified successfully.`);
         console.log('=== Welcome to BikeRent! ===\n');
-return true;
+        return true; 
     }
+
     const mailOptions = {
         from: {
             name: 'BikeRent',
@@ -224,6 +250,7 @@ return true;
             </div>
         `
     };
+
     try {
         await transporter.sendMail(mailOptions);
         console.log('Welcome email sent successfully');
