@@ -83,6 +83,51 @@ authRouter.post('/verify-email', async (req, res) => {
         res.json({ success: false, message: "Server error" });
     }
 });
+authRouter.get('/test-verify/:token', async (req, res) => {
+    try {
+        const { token } = req.params;
+
+        const user = await User.findOne({
+            emailVerificationToken: token,
+            emailVerificationExpires: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            return res.json({
+                success: false,
+                message: "Invalid or expired verification token",
+                token: token
+            });
+        }
+
+        user.isEmailVerified = true;
+        user.emailVerificationToken = undefined;
+        user.emailVerificationExpires = undefined;
+        await user.save();
+
+        await sendWelcomeEmail(user.email, user.name);
+
+        const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+
+        res.json({
+            success: true,
+            message: "Email verified successfully! Welcome to BikeRent!",
+            token: jwtToken,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                isEmailVerified: user.isEmailVerified
+            }
+        });
+
+    } catch (error) {
+        console.error('Test verification error:', error);
+        res.json({ success: false, message: "Server error" });
+    }
+});
+
 authRouter.post('/resend-verification', async (req, res) => {
     try {
         const { email } = req.body;
