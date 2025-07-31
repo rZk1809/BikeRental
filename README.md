@@ -51,7 +51,7 @@ This project is built using the MERN stack along with other modern web technolog
 * **Frontend:** React.js
 * **Backend:** Node.js, Express.js
 * **Database:** MongoDB
-* **Deployment:** Render
+* **Deployment:** Render, Kubernetes
 
 ***
 
@@ -67,18 +67,18 @@ To run this project on your local machine, follow the steps below.
 
 ### Installation
 
-1.  **Clone the repository (you would replace the URL with your actual repo URL):**
+1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/bikerental.git](https://github.com/your-username/bikerental.git)
-    cd bikerental
+    git clone https://github.com/rZk1809/BikeRental.git
+    cd BikeRental-main
     ```
 
 2.  **Setup the Backend:**
     ```bash
-    cd backend
+    cd Backend
     npm install
     ```
-    Create a `.env` file in the `backend` directory and add your environment variables (e.g., database connection string, JWT secret).
+    Create a `.env` file in the `Backend` directory and add your environment variables (e.g., database connection string, JWT secret).
     ```env
     MONGO_URL=your_mongodb_connection_string
     PORT=5000
@@ -86,13 +86,13 @@ To run this project on your local machine, follow the steps below.
 
 3.  **Setup the User Frontend:**
     ```bash
-    cd ../user-frontend
+    cd ../Userfrontend
     npm install
     ```
 
 4.  **Setup the Admin Frontend:**
     ```bash
-    cd ../admin-frontend
+    cd ../admin
     npm install
     ```
 
@@ -100,21 +100,54 @@ To run this project on your local machine, follow the steps below.
 
 1.  **Start the Backend Server:**
     ```bash
-    # From the /backend directory
+    # From the /Backend directory
     npm start
     ```
     The server will be running on `http://localhost:5000` (or your configured port).
 
 2.  **Start the User Frontend:**
     ```bash
-    # From the /user-frontend directory
+    # From the /Userfrontend directory
     npm start
     ```
     The user app will open on `http://localhost:3000`.
 
 3.  **Start the Admin Frontend:**
     ```bash
-    # From the /admin-frontend directory
+    # From the /admin directory
     npm start
     ```
     The admin app will likely run on another port, such as `http://localhost:3001`.
+
+***
+
+## ☸️ Kubernetes Deployment
+
+This project includes Kubernetes manifests located in the `k8s/` directory for deploying the backend and frontend services.
+
+* Deployments and services for backend, admin frontend, and user frontend.
+* MongoDB StatefulSet and service manifests.
+* Ingress configuration for routing.
+* Secrets and namespace configuration.
+
+To deploy on a Kubernetes cluster, apply the manifests in the following order:
+
+```bash
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/secrets.yaml
+kubectl apply -f k8s/mongo-statefulset.yaml
+kubectl apply -f k8s/mongo-service.yaml
+kubectl apply -f k8s/backend-deployment.yaml
+kubectl apply -f k8s/backend-service.yaml
+kubectl apply -f k8s/admin-frontend-deployment.yaml
+kubectl apply -f k8s/admin-frontend-service.yaml
+kubectl apply -f k8s/user-frontend-deployment.yaml
+kubectl apply -f k8s/user-frontend-service.yaml
+kubectl apply -f k8s/ingress.yaml
+```
+
+***
+
+## 📞 Support
+
+For any issues or questions, please open an issue on the GitHub repository or contact the project maintainer.
