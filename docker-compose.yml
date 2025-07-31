@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:6
+    container_name: bikerental-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: bike-rental
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - bikerental-network
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: bikerental-backend
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - MONGODB_URI=mongodb://admin:password123@mongo:27017/bike-rental?authSource=admin
+      - JWT_SECRET=your-super-secret-jwt-key-change-in-production
+      - SESSION_SECRET=your-session-secret-change-in-production
+    ports:
+      - "3000:3000"
+    networks:
+      - bikerental-network
+
+  user-frontend:
+    build:
+      context: ./Userfrontend
+      dockerfile: Dockerfile
+    container_name: bikerental-user-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+    networks:
+      - bikerental-network
+
+  admin-frontend:
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+    container_name: bikerental-admin-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "8081:80"
+    networks:
+      - bikerental-network
+
+volumes:
+  mongo-data:
+    driver: local
+
+networks:
+  bikerental-network:
+    driver: bridge
